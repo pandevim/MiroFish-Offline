@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // Create axios instance
 const service = axios.create({
-  baseURL: '/api',
+  baseURL: '',
   timeout: 300000, // 5 minute timeout (ontology generation may require longer time)
   headers: {
     'Content-Type': 'application/json'
