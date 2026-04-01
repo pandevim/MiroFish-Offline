@@ -38,7 +38,7 @@ def main():
     app = create_app()
 
     # Serve the compiled Vue Frontend
-        @app.route('/', defaults={'path': ''})
+    @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
     def serve_vue_app(path):
         # Safely resolve the absolute path to the frontend/dist directory
