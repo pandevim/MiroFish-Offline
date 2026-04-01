@@ -4,6 +4,7 @@ MiroFish Backend Entry Point
 
 import os
 import sys
+from flask import send_from_directory
 
 # Solve Windows console Chinese character encoding issue: set UTF-8 encoding before all imports
 if sys.platform == 'win32':
@@ -35,6 +36,20 @@ def main():
 
     # Create application
     app = create_app()
+
+    # Serve the compiled Vue Frontend
+        @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def serve_vue_app(path):
+        # Safely resolve the absolute path to the frontend/dist directory
+        dist_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../frontend/dist'))
+        
+        # If the requested file exists (like JS, CSS, or images), serve it
+        if path != "" and os.path.exists(os.path.join(dist_dir, path)):
+            return send_from_directory(dist_dir, path)
+        
+        # Otherwise, serve the main index.html (Allows Vue Router to handle the UI)
+        return send_from_directory(dist_dir, 'index.html')
 
     # Get runtime configuration
     host = os.environ.get('FLASK_HOST', '0.0.0.0')
