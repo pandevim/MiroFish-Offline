@@ -36,11 +36,10 @@ from google.colab import userdata
 from pyngrok import ngrok
 
 env = os.environ.copy()
-env["OLLAMA_NUM_PARALLEL"] = "10"      # Allow 5 simultaneous agent requests
+env["OLLAMA_NUM_PARALLEL"] = "5"       # 5 slots keeps all 49 layers on GPU (10 slots overflows KV cache to CPU, making each request 20x slower)
 env["OLLAMA_MAX_QUEUE"] = "64"         # Don't drop requests, queue them up
 env["OLLAMA_FLASH_ATTENTION"] = "1"    # Speed up large context windows (Flash Attention)
 env['CUDA_VISIBLE_DEVICES'] = '0'      # Force it to use the GPU
-env["OLLAMA_CONTEXT_LENGTH"] = "8192"  # 8K context per slot (agents make short posts, 32K is overkill and eats all VRAM for KV cache)
 env["OLLAMA_KV_CACHE_TYPE"] = "q8_0"   # Quantize KV cache to save even more VRAM
 
 # Create the logs directory if it doesn't exist

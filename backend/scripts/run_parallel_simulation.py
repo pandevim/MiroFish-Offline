@@ -1156,7 +1156,7 @@ async def run_twitter_simulation(
         agent_graph=result.agent_graph,
         platform=oasis.DefaultPlatformType.TWITTER,
         database_path=db_path,
-        semaphore=10,  # Limit concurrent LLM requests (matched to OLLAMA_NUM_PARALLEL)
+        semaphore=3,  # Must be <= OLLAMA_NUM_PARALLEL (5). Lower = fewer concurrent LLM calls = stable
     )
     
     await result.env.reset()
@@ -1347,7 +1347,7 @@ async def run_reddit_simulation(
         agent_graph=result.agent_graph,
         platform=oasis.DefaultPlatformType.REDDIT,
         database_path=db_path,
-        semaphore=10,  # Limit concurrent LLM requests (matched to OLLAMA_NUM_PARALLEL)
+        semaphore=3,  # Must be <= OLLAMA_NUM_PARALLEL (5). Lower = fewer concurrent LLM calls = stable
     )
     
     await result.env.reset()
