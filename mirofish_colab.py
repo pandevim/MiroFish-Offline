@@ -1,0 +1,146 @@
+
+# %%capture
+# !pip install neo4j \
+#              pyngrok \
+#              camel-oasis \
+#              "flask>=3.0.0" \
+#              "flask-cors>=6.0.0" \
+#              "openai==1.30.0" \
+#              "requests>=2.28.0" \
+#              "neo4j>=5.15.0" \
+#              "camel-oasis==0.2.5" \
+#              "camel-ai==0.2.78" \
+#              "PyMuPDF>=1.24.0" \
+#              "charset-normalizer>=3.0.0" \
+#              "chardet>=5.0.0" \
+#              "python-dotenv>=1.0.0" \
+#              "pydantic>=2.0.0"
+# 
+# !sudo apt update && sudo apt install -y pciutils zstd
+# !curl -fsSL https://ollama.com/install.sh | sh
+
+import os
+import subprocess
+import time
+from google.colab import userdata
+from pyngrok import ngrok
+
+env = os.environ.copy()
+env["OLLAMA_NUM_PARALLEL"] = "10"    # Allow 10 simultaneous agent requests (A100 80GB has headroom)
+env["OLLAMA_MAX_QUEUE"] = "64"       # Smaller queue to fail fast rather than timeout silently
+env["OLLAMA_FLASH_ATTENTION"] = "1"  # Speed up large context windows (Flash Attention)
+env['CUDA_VISIBLE_DEVICES'] = '0'    # Force it to use the GPU
+
+# Create the logs directory if it doesn't exist
+log_dir = '/content/logs'
+os.makedirs(log_dir, exist_ok=True)
+
+ollama_proc = subprocess.Popen(
+    ['ollama', 'serve'],
+    stdout=open(os.path.join(log_dir, 'ollama.log'), 'w'),
+    stderr=subprocess.STDOUT,
+    env=env
+)
+time.sleep(5)
+!echo "✅ Ollama server started (PID: $(pgrep ollama))"
+
+!ollama pull qwen2.5:14b
+!ollama pull nomic-embed-text
+!ollama list
+!echo "✅ All models ready"
+
+def setup_git_repo(repo_url, base_path="/content"):
+    """
+    Clones a git repository or pulls updates if it already exists.
+
+    Args:
+        repo_url (str): The HTTPS URL of the GitHub repository.
+        base_path (str): The local directory where the repo should live.
+    """
+    # Ensure we are in the correct base directory
+    os.chdir(base_path)
+
+    # Extract the repository name from the URL (e.g., 'raise-26')
+    repo_dir = repo_url.split("/")[-1].replace(".git", "")
+    repo_path = os.path.join(base_path, repo_dir)
+
+    if os.path.exists(repo_path):
+        print(f"Directory '{repo_dir}' exists. Pulling latest changes...")
+        # Run git pull inside the specific directory
+        subprocess.run(["git", "-C", repo_path, "pull"], check=True)
+    else:
+        print(f"Directory '{repo_dir}' not found. Cloning...")
+        subprocess.run(["git", "clone", repo_url], check=True)
+
+    return repo_path
+
+setup_git_repo("https://github.com/pandevim/raise-26.git")
+
+os.environ["INSTANCE_NAME"] = "mirofish-graph"
+os.environ["NEO4J_CLIENT_ID"] = userdata.get('NEO4J_CLIENT_ID')
+os.environ["NEO4J_CLIENT_SECRET"] = userdata.get('NEO4J_CLIENT_SECRET')
+
+# Commented out IPython magic to ensure Python compatibility.
+# %cd raise-26
+# %run neo4j_sandbox_colab.py
+
+# Clone MiroFish-Offline & Write .env
+setup_git_repo("https://github.com/pandevim/MiroFish-Offline.git")
+
+MY_NEO4J_URI = "neo4j+s://10b738ee.databases.neo4j.io" # connection_info['bolt_url']
+MY_NEO4J_USER = "10b738ee" # connection_info['username']
+MY_NEO4J_PASSWORD = "lsypUWYzFNuhbcfhcBYpMlpuoWl4NX7sTDRJQKcFcgk" # connection_info['password']
+MY_LLM_MODEL = "qwen2.5:14b"
+
+# Write .env with AuraDB credentials, Ollama config, and OASIS config
+env_content = f"""# === LLM (Ollama on Colab GPU) ===
+LLM_API_KEY=ollama
+LLM_BASE_URL=http://localhost:11434/v1
+LLM_MODEL_NAME={MY_LLM_MODEL}
+
+# === Neo4j AuraDB ===
+NEO4J_URI={MY_NEO4J_URI}
+NEO4J_USER={MY_NEO4J_USER}
+NEO4J_PASSWORD={MY_NEO4J_PASSWORD}
+
+# === Embeddings (Ollama) ===
+EMBEDDING_MODEL=nomic-embed-text
+EMBEDDING_BASE_URL=http://localhost:11434
+
+# === OASIS / CAMEL-AI Configuration ===
+OPENAI_API_KEY=ollama
+OPENAI_API_BASE_URL=http://localhost:11434/v1
+OPENAI_BASE_URL=http://localhost:11434/v1
+"""
+
+# Remember to save it inside the cloned repo!
+with open('/content/MiroFish-Offline/.env', 'w') as f:
+    f.write(env_content)
+
+print('✅ .env written successfully!')
+
+# Commented out IPython magic to ensure Python compatibility.
+# %%capture
+# !cd /content/MiroFish-Offline/frontend && npm install && npm run build
+
+# Start backend in background
+backend_proc = subprocess.Popen(
+    ['python', 'run.py'],
+    stdout=open(os.path.join(log_dir, 'mirofish_backend.log'), 'w'),
+    stderr=subprocess.STDOUT,
+    cwd='/content/MiroFish-Offline/backend'
+)
+time.sleep(5)
+print(f'✅ Backend running (PID: {backend_proc.pid})')
+
+token = userdata.get('NGROK_AUTH_TOKEN')
+!ngrok config add-authtoken {token}
+print("🚀 MiroFish App URL:", ngrok.connect(5001))
+
+# !pkill -f "ollama"
+# backend_proc.kill()
+# !fuser -k 5001/tcp
+# !rm -rf /content/MiroFish-Offline/
+
+# !tail -n 50 /content/logs/mirofish_backend.log
+!tail -n 50 /content/logs/ollama.log
