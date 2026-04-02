@@ -1,0 +1,8 @@
+Environment: A high-traffic digital town hall called "The Agora," where citizens from the uploaded report are reacting to a new legislative proposal: "The Human Intelligence Primacy Act."
+
+The Proposal: This law would tax all "Agentic Labor" at 50% and mandate that any AI-generated decision in healthcare or law must be "re-verified" by a human within 24 hours, effectively slowing down the speed of AI-driven industries.
+
+Agent Instructions: > 1. Generate personas including a Displaced Data Entry Clerk, a Venture Capitalist (Accelerationist), an Analog Coalition Activist, and an AI-Companion Developer.
+2. Each agent must use the "Reality Seeds" document to justify their stance.
+3. Conflict Goal: Simulate 5 rounds of debate. Agents should try to form "coalitions" in the Neo4j graph.
+4. The Variable: In Round 3, inject a news flash: "A rogue AI agent just successfully mitigated a city-wide power outage that humans couldn't solve." > 5. Observe if the "Analog Coalition" agents change their mind or double down on "safety."
