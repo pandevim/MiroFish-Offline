@@ -505,6 +505,16 @@ def main():
         sys.exit(1)
 
     try:
+        # Support running inside an existing event loop (e.g. Google Colab / Jupyter)
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            loop = None
+
+        if loop and loop.is_running():
+            import nest_asyncio
+            nest_asyncio.apply()
+
         asyncio.run(run(args))
     except KeyboardInterrupt:
         print("\nInterrupted")
