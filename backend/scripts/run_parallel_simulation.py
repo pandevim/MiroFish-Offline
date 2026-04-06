@@ -1210,54 +1210,94 @@ async def run_twitter_simulation(
     if action_logger:
         action_logger.log_round_end(0, initial_action_count)
     
+    # Pre-index scheduled events by trigger_hour for O(1) lookup
+    scheduled_events = event_config.get("scheduled_events", [])
+    scheduled_by_hour: Dict[int, list] = {}
+    for evt in scheduled_events:
+        h = evt.get("trigger_hour", -1)
+        scheduled_by_hour.setdefault(h, []).append(evt)
+    injected_hours: set = set()  # Track which hours already had events injected
+
     # Main simulation loop
     time_config = config.get("time_config", {})
     total_hours = time_config.get("total_simulation_hours", 72)
     minutes_per_round = time_config.get("minutes_per_round", 30)
     total_rounds = (total_hours * 60) // minutes_per_round
-    
+
     # If maximum rounds specified, truncate
     if max_rounds is not None and max_rounds > 0:
         original_rounds = total_rounds
         total_rounds = min(total_rounds, max_rounds)
         if total_rounds < original_rounds:
             log_info(f"Rounds truncated: {original_rounds} -> {total_rounds} (max_rounds={max_rounds})")
-    
+
     start_time = datetime.now()
-    
+
     for round_num in range(total_rounds):
         # Check if received exit signal
         if _shutdown_event and _shutdown_event.is_set():
             if main_logger:
                 main_logger.info(f"Received exit signal，at round {round_num + 1} stop simulation")
             break
-        
+
         simulated_minutes = round_num * minutes_per_round
         simulated_hour = (simulated_minutes // 60) % 24
         simulated_day = simulated_minutes // (60 * 24) + 1
-        
+        # Absolute hour since simulation start (for scheduled events)
+        abs_hour = simulated_minutes // 60
+
+        # --- Inject scheduled events for this hour (once per abs_hour) ---
+        if abs_hour not in injected_hours and abs_hour in scheduled_by_hour:
+            injected_hours.add(abs_hour)
+            sched_actions = {}
+            sched_count = 0
+            for sevt in scheduled_by_hour[abs_hour]:
+                s_agent_id = sevt.get("poster_agent_id", 0)
+                s_content = sevt.get("content", "")
+                try:
+                    s_agent = result.env.agent_graph.get_agent(s_agent_id)
+                    sched_actions[s_agent] = ManualAction(
+                        action_type=ActionType.CREATE_POST,
+                        action_args={"content": s_content}
+                    )
+                    if action_logger:
+                        action_logger.log_action(
+                            round_num=round_num + 1,
+                            agent_id=s_agent_id,
+                            agent_name=agent_names.get(s_agent_id, f"Agent_{s_agent_id}"),
+                            action_type="CREATE_POST",
+                            action_args={"content": s_content, "_scheduled_hour": abs_hour}
+                        )
+                        total_actions += 1
+                        sched_count += 1
+                except Exception:
+                    pass
+            if sched_actions:
+                await result.env.step(sched_actions)
+                log_info(f"Injected {sched_count} scheduled events at hour {abs_hour}")
+
         active_agents = get_active_agents_for_round(
             result.env, config, simulated_hour, round_num
         )
-        
+
         # Log round start regardless of active agents
         if action_logger:
             action_logger.log_round_start(round_num + 1, simulated_hour)
-        
+
         if not active_agents:
             # Log round end even without active agents (actions_count=0)
             if action_logger:
                 action_logger.log_round_end(round_num + 1, 0)
             continue
-        
+
         actions = {agent: LLMAction() for _, agent in active_agents}
         await result.env.step(actions)
-        
+
         # Get actual executed actions from Database and log
         actual_actions, last_rowid = fetch_new_actions_from_db(
             db_path, last_rowid, agent_names
         )
-        
+
         round_action_count = 0
         for action_data in actual_actions:
             if action_logger:
@@ -1270,23 +1310,23 @@ async def run_twitter_simulation(
                 )
                 total_actions += 1
                 round_action_count += 1
-        
+
         if action_logger:
             action_logger.log_round_end(round_num + 1, round_action_count)
-        
+
         if (round_num + 1) % 20 == 0:
             progress = (round_num + 1) / total_rounds * 100
             log_info(f"Day {simulated_day}, {simulated_hour:02d}:00 - Round {round_num + 1}/{total_rounds} ({progress:.1f}%)")
-    
+
     # Note: Do not close environment, keep for Interview use
-    
+
     if action_logger:
         action_logger.log_simulation_end(total_rounds, total_actions)
-    
+
     result.total_actions = total_actions
     elapsed = (datetime.now() - start_time).total_seconds()
     log_info(f"Simulation loop completed! Time taken: {elapsed:.1f}seconds, Total actions: {total_actions}")
-    
+
     return result
 
 
@@ -1409,54 +1449,102 @@ async def run_reddit_simulation(
     if action_logger:
         action_logger.log_round_end(0, initial_action_count)
     
+    # Pre-index scheduled events by trigger_hour for O(1) lookup
+    scheduled_events = event_config.get("scheduled_events", [])
+    scheduled_by_hour: Dict[int, list] = {}
+    for evt in scheduled_events:
+        h = evt.get("trigger_hour", -1)
+        scheduled_by_hour.setdefault(h, []).append(evt)
+    injected_hours: set = set()  # Track which hours already had events injected
+
     # Main simulation loop
     time_config = config.get("time_config", {})
     total_hours = time_config.get("total_simulation_hours", 72)
     minutes_per_round = time_config.get("minutes_per_round", 30)
     total_rounds = (total_hours * 60) // minutes_per_round
-    
+
     # If maximum rounds specified, truncate
     if max_rounds is not None and max_rounds > 0:
         original_rounds = total_rounds
         total_rounds = min(total_rounds, max_rounds)
         if total_rounds < original_rounds:
             log_info(f"Rounds truncated: {original_rounds} -> {total_rounds} (max_rounds={max_rounds})")
-    
+
     start_time = datetime.now()
-    
+
     for round_num in range(total_rounds):
         # Check if received exit signal
         if _shutdown_event and _shutdown_event.is_set():
             if main_logger:
                 main_logger.info(f"Received exit signal，at round {round_num + 1} stop simulation")
             break
-        
+
         simulated_minutes = round_num * minutes_per_round
         simulated_hour = (simulated_minutes // 60) % 24
         simulated_day = simulated_minutes // (60 * 24) + 1
-        
+        # Absolute hour since simulation start (for scheduled events)
+        abs_hour = simulated_minutes // 60
+
+        # --- Inject scheduled events for this hour (once per abs_hour) ---
+        if abs_hour not in injected_hours and abs_hour in scheduled_by_hour:
+            injected_hours.add(abs_hour)
+            sched_actions = {}
+            sched_count = 0
+            for sevt in scheduled_by_hour[abs_hour]:
+                s_agent_id = sevt.get("poster_agent_id", 0)
+                s_content = sevt.get("content", "")
+                try:
+                    s_agent = result.env.agent_graph.get_agent(s_agent_id)
+                    if s_agent in sched_actions:
+                        if not isinstance(sched_actions[s_agent], list):
+                            sched_actions[s_agent] = [sched_actions[s_agent]]
+                        sched_actions[s_agent].append(ManualAction(
+                            action_type=ActionType.CREATE_POST,
+                            action_args={"content": s_content}
+                        ))
+                    else:
+                        sched_actions[s_agent] = ManualAction(
+                            action_type=ActionType.CREATE_POST,
+                            action_args={"content": s_content}
+                        )
+                    if action_logger:
+                        action_logger.log_action(
+                            round_num=round_num + 1,
+                            agent_id=s_agent_id,
+                            agent_name=agent_names.get(s_agent_id, f"Agent_{s_agent_id}"),
+                            action_type="CREATE_POST",
+                            action_args={"content": s_content, "_scheduled_hour": abs_hour}
+                        )
+                        total_actions += 1
+                        sched_count += 1
+                except Exception:
+                    pass
+            if sched_actions:
+                await result.env.step(sched_actions)
+                log_info(f"Injected {sched_count} scheduled events at hour {abs_hour}")
+
         active_agents = get_active_agents_for_round(
             result.env, config, simulated_hour, round_num
         )
-        
+
         # Log round start regardless of active agents
         if action_logger:
             action_logger.log_round_start(round_num + 1, simulated_hour)
-        
+
         if not active_agents:
             # Log round end even without active agents (actions_count=0)
             if action_logger:
                 action_logger.log_round_end(round_num + 1, 0)
             continue
-        
+
         actions = {agent: LLMAction() for _, agent in active_agents}
         await result.env.step(actions)
-        
+
         # Get actual executed actions from Database and log
         actual_actions, last_rowid = fetch_new_actions_from_db(
             db_path, last_rowid, agent_names
         )
-        
+
         round_action_count = 0
         for action_data in actual_actions:
             if action_logger:
@@ -1469,23 +1557,23 @@ async def run_reddit_simulation(
                 )
                 total_actions += 1
                 round_action_count += 1
-        
+
         if action_logger:
             action_logger.log_round_end(round_num + 1, round_action_count)
-        
+
         if (round_num + 1) % 20 == 0:
             progress = (round_num + 1) / total_rounds * 100
             log_info(f"Day {simulated_day}, {simulated_hour:02d}:00 - Round {round_num + 1}/{total_rounds} ({progress:.1f}%)")
-    
+
     # Note: Do not close environment, keep for Interview use
-    
+
     if action_logger:
         action_logger.log_simulation_end(total_rounds, total_actions)
-    
+
     result.total_actions = total_actions
     elapsed = (datetime.now() - start_time).total_seconds()
     log_info(f"Simulation loop completed! Time taken: {elapsed:.1f}seconds, Total actions: {total_actions}")
-    
+
     return result
 
 
