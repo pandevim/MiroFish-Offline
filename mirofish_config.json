@@ -1,0 +1,1906 @@
+{
+  "simulation_id": "raise26_ai_behavior_sim",
+  "project_id": "raise26",
+  "graph_id": "raise26_graph",
+  "simulation_requirement": "Simulate how AI-related public discourse evolves over time and\nhow these narratives shape human behavior. Agents represent diverse societal perspectives\n(workers, researchers, policymakers, parents, artists, etc.) and react to real AI news\nheadlines from 2018-2020. Track how sentiment, dominant topics, and behavioral attitudes\nshift through agent interactions. The goal is to produce emergent predictions about future\nAI discourse trajectories and their behavioral consequences.",
+  "time_config": {
+    "total_simulation_hours": 48,
+    "minutes_per_round": 60,
+    "agents_per_hour_min": 3,
+    "agents_per_hour_max": 8,
+    "peak_hours": [
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    "peak_activity_multiplier": 1.8,
+    "off_peak_hours": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "off_peak_activity_multiplier": 0.05,
+    "morning_hours": [
+      6,
+      7,
+      8
+    ],
+    "morning_activity_multiplier": 0.4,
+    "work_hours": [
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ],
+    "work_activity_multiplier": 0.7
+  },
+  "agent_configs": [
+    {
+      "agent_id": 0,
+      "entity_uuid": "entity-0",
+      "entity_name": "Tech Entrepreneur #0",
+      "entity_type": "Tech Entrepreneur",
+      "bio": "Silicon Valley founder who believes AI will solve humanity's biggest problems. Evangelical about automation and efficiency gains.",
+      "activity_level": 0.42,
+      "posts_per_hour": 1.6,
+      "comments_per_hour": 1.8,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": 0.4,
+      "stance": "strongly_positive",
+      "influence_weight": 1.47
+    },
+    {
+      "agent_id": 1,
+      "entity_uuid": "entity-1",
+      "entity_name": "AI Researcher #1",
+      "entity_type": "AI Researcher",
+      "bio": "Academic ML researcher excited about breakthroughs but aware of limitations. Focuses on capability advances and benchmarks.",
+      "activity_level": 0.43,
+      "posts_per_hour": 1.3,
+      "comments_per_hour": 3.3,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": 0.2,
+      "stance": "positive",
+      "influence_weight": 0.95
+    },
+    {
+      "agent_id": 2,
+      "entity_uuid": "entity-2",
+      "entity_name": "Tech Journalist #2",
+      "entity_type": "Tech Journalist",
+      "bio": "Covers AI industry for a major tech publication. Tries to be balanced but drawn to dramatic narratives and hype cycles.",
+      "activity_level": 0.44,
+      "posts_per_hour": 1.5,
+      "comments_per_hour": 2.2,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": 0.05,
+      "stance": "neutral",
+      "influence_weight": 1.29
+    },
+    {
+      "agent_id": 3,
+      "entity_uuid": "entity-3",
+      "entity_name": "Factory Worker #3",
+      "entity_type": "Factory Worker",
+      "bio": "Blue-collar worker worried about automation replacing jobs. Skeptical of promises that AI will create more jobs than it destroys.",
+      "activity_level": 0.52,
+      "posts_per_hour": 1.5,
+      "comments_per_hour": 3.4,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": -0.3,
+      "stance": "negative",
+      "influence_weight": 0.94
+    },
+    {
+      "agent_id": 4,
+      "entity_uuid": "entity-4",
+      "entity_name": "HR Manager #4",
+      "entity_type": "HR Manager",
+      "bio": "Corporate HR professional navigating AI hiring tools, workforce reskilling, and employee anxiety about automation.",
+      "activity_level": 0.52,
+      "posts_per_hour": 0.6,
+      "comments_per_hour": 1.7,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": -0.1,
+      "stance": "cautious",
+      "influence_weight": 1.08
+    },
+    {
+      "agent_id": 5,
+      "entity_uuid": "entity-5",
+      "entity_name": "Economist #5",
+      "entity_type": "Economist",
+      "bio": "Labor economist studying AI's impact on wages, productivity, and inequality. Data-driven, sees both displacement and augmentation.",
+      "activity_level": 0.54,
+      "posts_per_hour": 1.4,
+      "comments_per_hour": 1.3,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": 0.0,
+      "stance": "neutral",
+      "influence_weight": 1.04
+    },
+    {
+      "agent_id": 6,
+      "entity_uuid": "entity-6",
+      "entity_name": "Ethics Advocate #6",
+      "entity_type": "Ethics Advocate",
+      "bio": "AI ethics researcher focused on bias, fairness, and accountability. Pushes for regulation and transparency in AI systems.",
+      "activity_level": 0.65,
+      "posts_per_hour": 0.8,
+      "comments_per_hour": 3.1,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": -0.2,
+      "stance": "critical",
+      "influence_weight": 1.39
+    },
+    {
+      "agent_id": 7,
+      "entity_uuid": "entity-7",
+      "entity_name": "Policy Maker #7",
+      "entity_type": "Policy Maker",
+      "bio": "Government technology policy advisor trying to balance innovation with public safety. Interested in regulation frameworks.",
+      "activity_level": 0.36,
+      "posts_per_hour": 0.6,
+      "comments_per_hour": 3.1,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": -0.05,
+      "stance": "cautious",
+      "influence_weight": 0.54
+    },
+    {
+      "agent_id": 8,
+      "entity_uuid": "entity-8",
+      "entity_name": "Privacy Activist #8",
+      "entity_type": "Privacy Activist",
+      "bio": "Digital rights advocate alarmed by facial recognition, surveillance AI, and data harvesting. Calls for bans and strict regulation.",
+      "activity_level": 0.76,
+      "posts_per_hour": 1.4,
+      "comments_per_hour": 2.4,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": -0.3,
+      "stance": "negative",
+      "influence_weight": 0.99
+    },
+    {
+      "agent_id": 9,
+      "entity_uuid": "entity-9",
+      "entity_name": "Doctor #9",
+      "entity_type": "Doctor",
+      "bio": "Physician who uses AI diagnostic tools daily. Sees potential in medical AI but worries about over-reliance and liability.",
+      "activity_level": 0.55,
+      "posts_per_hour": 1.0,
+      "comments_per_hour": 4.0,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": 0.15,
+      "stance": "positive",
+      "influence_weight": 0.51
+    },
+    {
+      "agent_id": 10,
+      "entity_uuid": "entity-10",
+      "entity_name": "Patient Advocate #10",
+      "entity_type": "Patient Advocate",
+      "bio": "Health advocacy group leader concerned about AI in healthcare decisions, data privacy, and equitable access to AI-powered care.",
+      "activity_level": 0.57,
+      "posts_per_hour": 0.6,
+      "comments_per_hour": 3.1,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": -0.1,
+      "stance": "cautious",
+      "influence_weight": 0.82
+    },
+    {
+      "agent_id": 11,
+      "entity_uuid": "entity-11",
+      "entity_name": "Teacher #11",
+      "entity_type": "Teacher",
+      "bio": "High school educator exploring AI tutoring tools while worried about cheating, critical thinking erosion, and digital divide.",
+      "activity_level": 0.61,
+      "posts_per_hour": 1.7,
+      "comments_per_hour": 1.5,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": 0.0,
+      "stance": "cautious",
+      "influence_weight": 1.45
+    },
+    {
+      "agent_id": 12,
+      "entity_uuid": "entity-12",
+      "entity_name": "Artist #12",
+      "entity_type": "Artist",
+      "bio": "Digital artist threatened by generative AI. Vocal about copyright, creative authenticity, and the devaluation of human artistry.",
+      "activity_level": 0.4,
+      "posts_per_hour": 1.1,
+      "comments_per_hour": 2.9,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": -0.25,
+      "stance": "negative",
+      "influence_weight": 1.45
+    },
+    {
+      "agent_id": 13,
+      "entity_uuid": "entity-13",
+      "entity_name": "Content Creator #13",
+      "entity_type": "Content Creator",
+      "bio": "YouTuber and social media creator who embraces AI tools for editing, writing, and content generation. Sees AI as empowering.",
+      "activity_level": 0.52,
+      "posts_per_hour": 1.0,
+      "comments_per_hour": 3.1,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": 0.2,
+      "stance": "positive",
+      "influence_weight": 0.74
+    },
+    {
+      "agent_id": 14,
+      "entity_uuid": "entity-14",
+      "entity_name": "Parent #14",
+      "entity_type": "Parent",
+      "bio": "Parent of teenagers worried about deepfakes, AI-generated misinformation, children's screen time, and social media manipulation.",
+      "activity_level": 0.51,
+      "posts_per_hour": 0.6,
+      "comments_per_hour": 2.2,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": -0.15,
+      "stance": "cautious",
+      "influence_weight": 1.41
+    },
+    {
+      "agent_id": 15,
+      "entity_uuid": "entity-15",
+      "entity_name": "College Student #15",
+      "entity_type": "College Student",
+      "bio": "Computer science student excited about AI career opportunities but uncertain about the job market and ethical implications.",
+      "activity_level": 0.61,
+      "posts_per_hour": 1.4,
+      "comments_per_hour": 3.6,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": 0.1,
+      "stance": "positive",
+      "influence_weight": 1.43
+    },
+    {
+      "agent_id": 16,
+      "entity_uuid": "entity-16",
+      "entity_name": "Retiree #16",
+      "entity_type": "Retiree",
+      "bio": "Retired professional suspicious of tech hype. Relies on traditional media, worried about scams and losing human connection.",
+      "activity_level": 0.52,
+      "posts_per_hour": 0.7,
+      "comments_per_hour": 3.6,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": -0.1,
+      "stance": "skeptical",
+      "influence_weight": 1.02
+    },
+    {
+      "agent_id": 17,
+      "entity_uuid": "entity-17",
+      "entity_name": "Cybersecurity Analyst #17",
+      "entity_type": "Cybersecurity Analyst",
+      "bio": "Security professional focused on AI-powered threats: deepfakes, automated hacking, social engineering at scale.",
+      "activity_level": 0.64,
+      "posts_per_hour": 0.6,
+      "comments_per_hour": 3.7,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": -0.15,
+      "stance": "critical",
+      "influence_weight": 1.37
+    },
+    {
+      "agent_id": 18,
+      "entity_uuid": "entity-18",
+      "entity_name": "CEO #18",
+      "entity_type": "CEO",
+      "bio": "Fortune 500 executive pushing AI adoption for competitive advantage. Focused on ROI, productivity, and market disruption.",
+      "activity_level": 0.33,
+      "posts_per_hour": 0.8,
+      "comments_per_hour": 1.6,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": 0.35,
+      "stance": "strongly_positive",
+      "influence_weight": 0.91
+    },
+    {
+      "agent_id": 19,
+      "entity_uuid": "entity-19",
+      "entity_name": "Small Business Owner #19",
+      "entity_type": "Small Business Owner",
+      "bio": "Local business owner curious about AI tools but overwhelmed by options and skeptical of overpromises. Budget-conscious.",
+      "activity_level": 0.65,
+      "posts_per_hour": 1.6,
+      "comments_per_hour": 1.3,
+      "active_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "response_delay_min": 5,
+      "response_delay_max": 120,
+      "sentiment_bias": 0.05,
+      "stance": "neutral",
+      "influence_weight": 0.62
+    }
+  ],
+  "event_config": {
+    "initial_posts": [
+      {
+        "content": "[2018-02-01] In Search of the Elusive  Citizen Integrator  | @ CloudExpo # DigitalTransformation",
+        "poster_agent_id": 7,
+        "poster_type": "Policy Maker"
+      },
+      {
+        "content": "[2018-02-01] Robots Learn To Move Like Humans Using Virtual Reality",
+        "poster_agent_id": 11,
+        "poster_type": "Teacher"
+      },
+      {
+        "content": "[2018-02-01] In boardroom , robot gets a seat at the table",
+        "poster_agent_id": 5,
+        "poster_type": "Economist"
+      },
+      {
+        "content": "[2018-02-01] AI might be cutting edge , but the way it implemented shouldnt be , execs say",
+        "poster_agent_id": 14,
+        "poster_type": "Parent"
+      },
+      {
+        "content": "[2018-02-01] Pieces Technologies to tackle ROI of healthcare AI at HIMSS18",
+        "poster_agent_id": 9,
+        "poster_type": "Doctor"
+      },
+      {
+        "content": "[2018-02-01] PwC Assesses How AI Will Impact Jobs , Security and Enterprise Apps",
+        "poster_agent_id": 17,
+        "poster_type": "Cybersecurity Analyst"
+      },
+      {
+        "content": "[2018-02-01] 3ders . org - Noumena Robotic Habitats with 3D printed robots explores the evolution of artificial intelligence",
+        "poster_agent_id": 12,
+        "poster_type": "Artist"
+      },
+      {
+        "content": "[2018-02-01] Robots Tout Switching To Sprint In New Commercial",
+        "poster_agent_id": 2,
+        "poster_type": "Tech Journalist"
+      },
+      {
+        "content": "[2018-02-01] The crackdown on AI - assisted fake porn is starting",
+        "poster_agent_id": 12,
+        "poster_type": "Artist"
+      },
+      {
+        "content": "[2018-03-01] Chinese AI unicorn SenseTime teams up with MIT",
+        "poster_agent_id": 14,
+        "poster_type": "Parent"
+      },
+      {
+        "content": "[2018-03-01] AI still needs that human touch",
+        "poster_agent_id": 14,
+        "poster_type": "Parent"
+      },
+      {
+        "content": "[2018-03-01] Oracle Chatbot , # AI and Mobility with Suhas Uliyar | @ ExpoDX # ChatBots # IoT",
+        "poster_agent_id": 14,
+        "poster_type": "Parent"
+      },
+      {
+        "content": "[2018-03-01] Eric Schmidt provides support to MIT Intelligence Quest",
+        "poster_agent_id": 5,
+        "poster_type": "Economist"
+      },
+      {
+        "content": "[2018-03-01] Debunking the intelligence revolution",
+        "poster_agent_id": 5,
+        "poster_type": "Economist"
+      },
+      {
+        "content": "[2018-04-01] Artificial Intelligence : The Time is Now | @ ExpoDX # AI # ArtificialIntelligence",
+        "poster_agent_id": 12,
+        "poster_type": "Artist"
+      },
+      {
+        "content": "[2018-04-01] Five ways AI is disrupting financial services \u2013 FinTech Futures",
+        "poster_agent_id": 2,
+        "poster_type": "Tech Journalist"
+      },
+      {
+        "content": "[2018-04-01] Next Gen # DigitalTransformation Shakes Things Up Again ! | @ ExpoDX # AI # IoT",
+        "poster_agent_id": 2,
+        "poster_type": "Tech Journalist"
+      },
+      {
+        "content": "[2018-05-01] Axon Establishes AI Ethics Board",
+        "poster_agent_id": 6,
+        "poster_type": "Ethics Advocate"
+      },
+      {
+        "content": "[2018-05-01] UK Student Develops App Using Artificial Intelligence to Edit Your Photos",
+        "poster_agent_id": 11,
+        "poster_type": "Teacher"
+      },
+      {
+        "content": "[2018-05-01] ViaTouch integrates EyeLock for  high - tech vending machine  AI",
+        "poster_agent_id": 14,
+        "poster_type": "Parent"
+      },
+      {
+        "content": "[2018-05-01] How John Deere and Capital One use AI and machine learning",
+        "poster_agent_id": 11,
+        "poster_type": "Teacher"
+      },
+      {
+        "content": "[2018-06-01] Why A \u2018 Human In The Loop Can t Control AI : Richard Danzig \u00ab Breaking Defense",
+        "poster_agent_id": 7,
+        "poster_type": "Policy Maker"
+      },
+      {
+        "content": "[2018-06-01] 10 Odd Robots Saving Human Lives",
+        "poster_agent_id": 5,
+        "poster_type": "Economist"
+      },
+      {
+        "content": "[2018-06-01] AI better at finding skin cancer than doctors : study",
+        "poster_agent_id": 2,
+        "poster_type": "Tech Journalist"
+      },
+      {
+        "content": "[2018-06-01] AI can take over some tasks but will not replace humans : Experts , East Asia News & Top Stories",
+        "poster_agent_id": 2,
+        "poster_type": "Tech Journalist"
+      },
+      {
+        "content": "[2018-06-01] The tangled relationship between AI and human rights",
+        "poster_agent_id": 14,
+        "poster_type": "Parent"
+      },
+      {
+        "content": "[2018-07-01] AI impact on the future of work",
+        "poster_agent_id": 14,
+        "poster_type": "Parent"
+      },
+      {
+        "content": "[2018-07-01] Robots are set to carry out dementia care within 20 years",
+        "poster_agent_id": 14,
+        "poster_type": "Parent"
+      },
+      {
+        "content": "[2018-07-01] Dont be afraid of artificial intelligence managing your money",
+        "poster_agent_id": 12,
+        "poster_type": "Artist"
+      },
+      {
+        "content": "[2018-07-01] Humane Approach : Artificial Intelligence , Machine Learning have moved mainstream",
+        "poster_agent_id": 11,
+        "poster_type": "Teacher"
+      },
+      {
+        "content": "[2018-07-01] The dream of being an AI powerhouse",
+        "poster_agent_id": 14,
+        "poster_type": "Parent"
+      },
+      {
+        "content": "[2018-07-01] The AI bubble wont burst anytime soon , but change is on the horizon",
+        "poster_agent_id": 2,
+        "poster_type": "Tech Journalist"
+      },
+      {
+        "content": "[2018-07-01] How Artificial Intelligence Is Projected To Influence The Automotive Industry",
+        "poster_agent_id": 12,
+        "poster_type": "Artist"
+      },
+      {
+        "content": "[2018-07-01] Feature : AI education booming as China cultivates talent - Xinhua",
+        "poster_agent_id": 4,
+        "poster_type": "HR Manager"
+      },
+      {
+        "content": "[2018-08-01] The future role of AI in fact checking",
+        "poster_agent_id": 2,
+        "poster_type": "Tech Journalist"
+      },
+      {
+        "content": "[2018-08-01] LG Set To Define Future Of Artificial Intelligence At New North American AI Research Labs",
+        "poster_agent_id": 1,
+        "poster_type": "AI Researcher"
+      },
+      {
+        "content": "[2018-08-01] LG Advances AI Intent With New Research Lab",
+        "poster_agent_id": 1,
+        "poster_type": "AI Researcher"
+      },
+      {
+        "content": "[2018-08-01] How AI Could Become the Firewall of 2003",
+        "poster_agent_id": 7,
+        "poster_type": "Policy Maker"
+      },
+      {
+        "content": "[2018-08-01] AI system for managing and forecasting flood in Chennai soon",
+        "poster_agent_id": 14,
+        "poster_type": "Parent"
+      },
+      {
+        "content": "[2018-08-01] What hospitals need for successful AI : a digital base",
+        "poster_agent_id": 7,
+        "poster_type": "Policy Maker"
+      },
+      {
+        "content": "[2018-08-01] Robotic hands can grab and twist , and soon theyll have the touch",
+        "poster_agent_id": 7,
+        "poster_type": "Policy Maker"
+      },
+      {
+        "content": "[2018-09-01] Temi Is Your Personal Robot Butler , Like an Echo Show on Wheels",
+        "poster_agent_id": 2,
+        "poster_type": "Tech Journalist"
+      },
+      {
+        "content": "[2018-09-01] Robots  think  food matters",
+        "poster_agent_id": 2,
+        "poster_type": "Tech Journalist"
+      },
+      {
+        "content": "[2018-09-01] Experts : Artifical intelligence will be game - changer in manufacturing - News - GoUpstate",
+        "poster_agent_id": 3,
+        "poster_type": "Factory Worker"
+      },
+      {
+        "content": "[2018-09-01] Amazon Keynote : Alexa Voice Platform Building a New Industry",
+        "poster_agent_id": 14,
+        "poster_type": "Parent"
+      },
+      {
+        "content": "[2018-10-01] Artificial Intelligence Market \u2013 Leveraging Potential of Machine and Deep Learning Technologies in Digital Transformation to Bolster Uptake",
+        "poster_agent_id": 11,
+        "poster_type": "Teacher"
+      },
+      {
+        "content": "[2018-10-01] Lockheed Martin Contract to Marry Machine Learning with 3 - D Printing",
+        "poster_agent_id": 11,
+        "poster_type": "Teacher"
+      },
+      {
+        "content": "[2018-10-01] Microsoft Brings Robot Operating System to Windows 10",
+        "poster_agent_id": 2,
+        "poster_type": "Tech Journalist"
+      },
+      {
+        "content": "[2018-10-01] Machine - learning system tackles speech and object recognition , all at once",
+        "poster_agent_id": 11,
+        "poster_type": "Teacher"
+      },
+      {
+        "content": "[2018-10-01] MIT Skinbot is a Wearable Robot Designed to Scamper Over Your Body",
+        "poster_agent_id": 16,
+        "poster_type": "Retiree"
+      },
+      {
+        "content": "[2018-10-01] Three things CEOs should consider about AI",
+        "poster_agent_id": 18,
+        "poster_type": "CEO"
+      },
+      {
+        "content": "[2018-11-01] The Race For Robot Clairvoyance",
+        "poster_agent_id": 14,
+        "poster_type": "Parent"
+      },
+      {
+        "content": "[2018-11-01] [ WATCH ] Malta to explore possibility of granting robots  citizenship",
+        "poster_agent_id": 14,
+        "poster_type": "Parent"
+      },
+      {
+        "content": "[2018-11-01] MIT creates an AI machine that will learn language the way kids do",
+        "poster_agent_id": 11,
+        "poster_type": "Teacher"
+      },
+      {
+        "content": "[2018-11-01] AI Startup Cornami reveals details of neural net chip",
+        "poster_agent_id": 0,
+        "poster_type": "Tech Entrepreneur"
+      },
+      {
+        "content": "[2018-11-01] FaceMe To Accelerate AI Innovation Using Tatau",
+        "poster_agent_id": 0,
+        "poster_type": "Tech Entrepreneur"
+      },
+      {
+        "content": "[2018-11-01] Robotic process automation : The basis of an AI future",
+        "poster_agent_id": 3,
+        "poster_type": "Factory Worker"
+      },
+      {
+        "content": "[2018-11-01] The AI hospitals have today and the AI they want tomorrow",
+        "poster_agent_id": 2,
+        "poster_type": "Tech Journalist"
+      },
+      {
+        "content": "[2018-11-01] Malta to Develop AI Strategy Following Success as  Blockchain Island",
+        "poster_agent_id": 14,
+        "poster_type": "Parent"
+      },
+      {
+        "content": "[2018-12-01] Soon you can immortalize yourself as an A . I . chatbot . But should you ?",
+        "poster_agent_id": 2,
+        "poster_type": "Tech Journalist"
+      },
+      {
+        "content": "[2019-01-01] The  Godfather of Deep Learning  on Why We Need to Ensure AI Doesnt Just Benefit the Rich",
+        "poster_agent_id": 11,
+        "poster_type": "Teacher"
+      },
+      {
+        "content": "[2019-01-01] The AI that could keep you happy at work : Ex - Google team reveal software that  nudge workers",
+        "poster_agent_id": 3,
+        "poster_type": "Factory Worker"
+      },
+      {
+        "content": "[2019-01-01] Japanese researchers develop a prototype humanoid robot aimed at eventually replacing human laborers",
+        "poster_agent_id": 1,
+        "poster_type": "AI Researcher"
+      },
+      {
+        "content": "[2019-01-01] Now , AI & ML will help professionals find their better halves",
+        "poster_agent_id": 14,
+        "poster_type": "Parent"
+      },
+      {
+        "content": "[2019-01-01] Microsoft , Taiwan AI Labs collaborate for genetic analysis \u2013 The Siasat Daily",
+        "poster_agent_id": 2,
+        "poster_type": "Tech Journalist"
+      },
+      {
+        "content": "[2019-02-01] Robots have already mastered games like chess and Go . Now theyre coming for Jenga .",
+        "poster_agent_id": 2,
+        "poster_type": "Tech Journalist"
+      }
+    ],
+    "scheduled_events": [
+      {
+        "trigger_hour": 0,
+        "event_type": "inject_post",
+        "content": "[2019-02-01] Budget 2019 : Focus on artificial intelligence as it makes waves in healthcare , employment and M & E",
+        "poster_agent_id": 9
+      },
+      {
+        "trigger_hour": 0,
+        "event_type": "inject_post",
+        "content": "[2019-02-01] To prepare for the future battlefield , the Army has opened its AI Task Force at CMU",
+        "poster_agent_id": 5
+      },
+      {
+        "trigger_hour": 0,
+        "event_type": "inject_post",
+        "content": "[2019-02-01] Self - aware machines wont be science fiction for much longer",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 1,
+        "event_type": "inject_post",
+        "content": "[2019-02-01] Physician viewpoint : AI could make economic , racial biases  automated and invisible",
+        "poster_agent_id": 3
+      },
+      {
+        "trigger_hour": 1,
+        "event_type": "inject_post",
+        "content": "[2019-02-01] The New Era of HR Driven By AI",
+        "poster_agent_id": 5
+      },
+      {
+        "trigger_hour": 1,
+        "event_type": "inject_post",
+        "content": "[2019-02-01] AOC is right about algorithms .",
+        "poster_agent_id": 1
+      },
+      {
+        "trigger_hour": 2,
+        "event_type": "inject_post",
+        "content": "[2019-03-01] A . I .- enabled bionic hand may be the bane of Baymax",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 2,
+        "event_type": "inject_post",
+        "content": "[2019-03-01] FedEx to develop autonomous same - day delivery robots",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 2,
+        "event_type": "inject_post",
+        "content": "[2019-03-01] New AI makes it harder to detect what real online",
+        "poster_agent_id": 5
+      },
+      {
+        "trigger_hour": 3,
+        "event_type": "inject_post",
+        "content": "[2019-03-01] Robots Flooding US Industries",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 3,
+        "event_type": "inject_post",
+        "content": "[2019-03-01] Using AI to Produce  Impossible  Tulips",
+        "poster_agent_id": 5
+      },
+      {
+        "trigger_hour": 3,
+        "event_type": "inject_post",
+        "content": "[2019-03-01] Co - Creation ! Accelerating AI in Embedded Taiwan Stock Exchange : 2395",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 4,
+        "event_type": "inject_post",
+        "content": "[2019-03-01] Stair - climbing robot is hitting streets in FedEx delivery test",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 4,
+        "event_type": "inject_post",
+        "content": "[2019-04-01] Will AI Destroy More Jobs Than It Creates Over the Next Decade ?",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 5,
+        "event_type": "inject_post",
+        "content": "[2019-04-01] How Is AI Working For Health Care ?",
+        "poster_agent_id": 9
+      },
+      {
+        "trigger_hour": 5,
+        "event_type": "inject_post",
+        "content": "[2019-04-01] Enterprise AI in 2019 : What you need to know",
+        "poster_agent_id": 18
+      },
+      {
+        "trigger_hour": 5,
+        "event_type": "inject_post",
+        "content": "[2019-04-01] Amazon Role in AI Fairness Research Raises Eyebrows",
+        "poster_agent_id": 1
+      },
+      {
+        "trigger_hour": 6,
+        "event_type": "inject_post",
+        "content": "[2019-04-01] Chinese colleges to offer AI major in challenge to US - Nikkei Asian Review",
+        "poster_agent_id": 15
+      },
+      {
+        "trigger_hour": 6,
+        "event_type": "inject_post",
+        "content": "[2019-04-01] WIPO launches AI - based image search tool for brands - Xinhua",
+        "poster_agent_id": 0
+      },
+      {
+        "trigger_hour": 6,
+        "event_type": "inject_post",
+        "content": "[2019-04-01] HARTING presents intelligent connectivity at HANNOVER MESSE for the next steps towards the Future Factory",
+        "poster_agent_id": 3
+      },
+      {
+        "trigger_hour": 7,
+        "event_type": "inject_post",
+        "content": "[2019-05-01] Nigerian scientist develops 1st global AI platform for language translation \u2013 Daily Trust",
+        "poster_agent_id": 5
+      },
+      {
+        "trigger_hour": 7,
+        "event_type": "inject_post",
+        "content": "[2019-05-01] Artificial Intelligence : a blessing or a curse waiting to unfold ?",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 7,
+        "event_type": "inject_post",
+        "content": "[2019-05-01] Machine learning , AI to revolutionize way in doing business",
+        "poster_agent_id": 11
+      },
+      {
+        "trigger_hour": 8,
+        "event_type": "inject_post",
+        "content": "[2019-05-01] Mr Robot - Al Ahram Weekly",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 8,
+        "event_type": "inject_post",
+        "content": "[2019-05-01] Lyft hires ex - Google engineer to be its new head of AI",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 8,
+        "event_type": "inject_post",
+        "content": "[2019-05-01] Who afraid of robots and why ? | Columns / Editorials",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 9,
+        "event_type": "inject_post",
+        "content": "[2019-05-01] Sony Aibo : The Dog And Personal Assistant Of The Future",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 9,
+        "event_type": "inject_post",
+        "content": "[2019-05-01] Half a Face Enough for Recognition Technology",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 10,
+        "event_type": "inject_post",
+        "content": "[2019-05-01] Artificial Intelligence BREAKTHROUGH : Powerful magnets mimic human brain activity | Science | News",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 10,
+        "event_type": "inject_post",
+        "content": "[2019-05-01] Facebook Wants AI to Screen Content , But Fairness Issues Remain - Economia e Finanza",
+        "poster_agent_id": 6
+      },
+      {
+        "trigger_hour": 10,
+        "event_type": "inject_post",
+        "content": "[2019-05-01] FDA exploring use of AI , blockchain to monitor food safety",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 11,
+        "event_type": "inject_post",
+        "content": "[2019-05-01] Canada navy is developing an AI voice assistant for warships , but dont worry : It wont control the weapons | Canada | News",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 11,
+        "event_type": "inject_post",
+        "content": "[2019-05-01] Facebook Wants AI to Screen Content , But Fairness Issues Remain",
+        "poster_agent_id": 6
+      },
+      {
+        "trigger_hour": 11,
+        "event_type": "inject_post",
+        "content": "[2019-05-01] Opinion : A & D Is Out Of Alignment With Industry 4 . 0 | [ primary - term ] content from Aviation Week",
+        "poster_agent_id": 13
+      },
+      {
+        "trigger_hour": 12,
+        "event_type": "inject_post",
+        "content": "[2019-06-01] The role of artificial intelligence in decoding human immunity",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 12,
+        "event_type": "inject_post",
+        "content": "[2019-06-01] Technology is overpowering our Palaeolithic brain says Google former design ethicist \u2013 Daily Maverick",
+        "poster_agent_id": 6
+      },
+      {
+        "trigger_hour": 12,
+        "event_type": "inject_post",
+        "content": "[2019-07-01] Harnessing AI / ML to Transform Your Mission and Save the World",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 13,
+        "event_type": "inject_post",
+        "content": "[2019-07-01] AI Helps Predict Lightning , Thunder",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 13,
+        "event_type": "inject_post",
+        "content": "[2019-07-01] AI Making Electric Grid Smarter",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 13,
+        "event_type": "inject_post",
+        "content": "[2019-07-01] Q & A : IBM brings internal AI solutions to market",
+        "poster_agent_id": 5
+      },
+      {
+        "trigger_hour": 14,
+        "event_type": "inject_post",
+        "content": "[2019-07-01] Using artificial intelligence to better predict severe weather",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 14,
+        "event_type": "inject_post",
+        "content": "[2019-08-01] Column : Artificial intelligence will kill jobs \u2013 and create them",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 15,
+        "event_type": "inject_post",
+        "content": "[2019-08-01] Bringing machine learning to the masses",
+        "poster_agent_id": 11
+      },
+      {
+        "trigger_hour": 15,
+        "event_type": "inject_post",
+        "content": "[2019-08-01] The Present And Future Of Artificial Intelligence On Sleepwalkers Podcast",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 15,
+        "event_type": "inject_post",
+        "content": "[2019-08-01] Should we be worried about superintelligence ?",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 16,
+        "event_type": "inject_post",
+        "content": "[2019-08-01] Deep learning AI can spot an irregular heartbeat from a scan that doctors see as normal",
+        "poster_agent_id": 11
+      },
+      {
+        "trigger_hour": 16,
+        "event_type": "inject_post",
+        "content": "[2019-08-01] Hillel Tech Corner : Ibex : AI - powered cancer detection - Opinion",
+        "poster_agent_id": 9
+      },
+      {
+        "trigger_hour": 16,
+        "event_type": "inject_post",
+        "content": "[2019-08-01] Artificial Intelligence ( AI ) in Construction Market to Reach $4 . 51 Billion by 2026",
+        "poster_agent_id": 0
+      },
+      {
+        "trigger_hour": 17,
+        "event_type": "inject_post",
+        "content": "[2019-08-01] Artificial intelligence could help air travelers save a bundle",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 17,
+        "event_type": "inject_post",
+        "content": "[2019-08-01] How MLPerf Is Changing the AI Hardware Performance Conversation",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 17,
+        "event_type": "inject_post",
+        "content": "[2019-08-01] Steam Labs update hits two of its big AI experiments",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 18,
+        "event_type": "inject_post",
+        "content": "[2019-09-01] Elon Musk : Humanity Is a Kind of  Biological Boot Loader  for AI",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 18,
+        "event_type": "inject_post",
+        "content": "[2019-10-01] Targeting AR and robots , Google adds object detection to AutoML",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 18,
+        "event_type": "inject_post",
+        "content": "[2019-10-01] How to Fit Artificial Intelligence into Manufacturing , Part 2",
+        "poster_agent_id": 3
+      },
+      {
+        "trigger_hour": 19,
+        "event_type": "inject_post",
+        "content": "[2019-10-01] AI System Accurately Detects Key Findings in Chest X - Rays of Pneumonia Patients Within 10 Seconds ; Study Finds Promise of Faster Treatment",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 19,
+        "event_type": "inject_post",
+        "content": "[2019-10-01] New Neuroprosthetic Is an AI Robotics Breakthrough",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 20,
+        "event_type": "inject_post",
+        "content": "[2019-10-01] Novartis to put AI on every employee desk through Microsoft partnership",
+        "poster_agent_id": 4
+      },
+      {
+        "trigger_hour": 20,
+        "event_type": "inject_post",
+        "content": "[2019-10-01] Alibaba unveils new AI chip aimed at speeding up e - commerce and cloud computing tasks",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 20,
+        "event_type": "inject_post",
+        "content": "[2019-10-01] AI Stocks : Dont Be Afraid of Artificial Intelligence -- Invest in It !",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 21,
+        "event_type": "inject_post",
+        "content": "[2019-10-01] Hey computer , tell me a joke : the problem of teaching AI humour",
+        "poster_agent_id": 11
+      },
+      {
+        "trigger_hour": 21,
+        "event_type": "inject_post",
+        "content": "[2019-10-01] How financial services industry in India is set for AI makeover",
+        "poster_agent_id": 5
+      },
+      {
+        "trigger_hour": 21,
+        "event_type": "inject_post",
+        "content": "[2019-10-01] Novartis and Microsoft join forces to develop drugs using AI",
+        "poster_agent_id": 9
+      },
+      {
+        "trigger_hour": 22,
+        "event_type": "inject_post",
+        "content": "[2019-10-01] What Industries Benefit the Most from Artificial Intelligence ?",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 22,
+        "event_type": "inject_post",
+        "content": "[2019-11-01] Autonomous Response : A Game Changer ?",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 22,
+        "event_type": "inject_post",
+        "content": "[2019-11-01] Artificial Intelligence on Wall Street Will Be Great , Until It Isnt",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 23,
+        "event_type": "inject_post",
+        "content": "[2019-11-01] CMS names 25 innovators advancing in AI Health Outcomes Challenge",
+        "poster_agent_id": 9
+      },
+      {
+        "trigger_hour": 23,
+        "event_type": "inject_post",
+        "content": "[2019-11-01] Human Future Design at World Summit AI 2019",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 24,
+        "event_type": "inject_post",
+        "content": "[2019-11-01] Debating AI in Oslo",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 24,
+        "event_type": "inject_post",
+        "content": "[2019-11-01] Leveraging AI to Transform Government - CIO Journal .",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 24,
+        "event_type": "inject_post",
+        "content": "[2019-11-01] CISA , DARPA Offer Look Into their Dealings with Deepfakes",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 25,
+        "event_type": "inject_post",
+        "content": "[2019-12-01] How artificial intelligence will revolutionize work",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 25,
+        "event_type": "inject_post",
+        "content": "[2019-12-01] Collaborative AI can ease the strain of small business",
+        "poster_agent_id": 3
+      },
+      {
+        "trigger_hour": 25,
+        "event_type": "inject_post",
+        "content": "[2020-01-01] Artificial Intelligence to the Internet of Things : Technologies that defined the way we lived in 2019",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 26,
+        "event_type": "inject_post",
+        "content": "[2020-02-01] A warehouse robot learns to sort out the tricky stuff",
+        "poster_agent_id": 11
+      },
+      {
+        "trigger_hour": 26,
+        "event_type": "inject_post",
+        "content": "[2020-02-01] Who is Winning the AI Race ?",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 26,
+        "event_type": "inject_post",
+        "content": "[2020-02-01] Gianluca Mauro : Artificial Intelligence Is Ready , People Are Not",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 27,
+        "event_type": "inject_post",
+        "content": "[2020-02-01] How Artificial Intelligence will change media : The Standard",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 27,
+        "event_type": "inject_post",
+        "content": "[2020-02-01] Andrew Yang wants global ban on killer robots",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 27,
+        "event_type": "inject_post",
+        "content": "[2020-03-01] AI will dominate the 2020s governments must ensure it ethical",
+        "poster_agent_id": 6
+      },
+      {
+        "trigger_hour": 28,
+        "event_type": "inject_post",
+        "content": "[2020-03-01] People prefer robots to explain themselves \u2013 and a brief summary doesnt cut it",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 28,
+        "event_type": "inject_post",
+        "content": "[2020-03-01] Will Technology Kill Off Most Jobs ? One Expert Says Dont Panic Just Yet",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 29,
+        "event_type": "inject_post",
+        "content": "[2020-03-01] Would machines overtake humans ?",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 29,
+        "event_type": "inject_post",
+        "content": "[2020-03-01] Sex Robots Could Sexually Assault Humans Because Of All - Too - Realistic AI , According To Computer Science Professor",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 29,
+        "event_type": "inject_post",
+        "content": "[2020-03-01] Medicine by Algorithm ? Will Computers Replace Doctors ?",
+        "poster_agent_id": 1
+      },
+      {
+        "trigger_hour": 30,
+        "event_type": "inject_post",
+        "content": "[2020-03-01] AI and copyright authorship : still mind over matter ?",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 30,
+        "event_type": "inject_post",
+        "content": "[2020-03-01] Dont fear a  robot apocalypse  \u2013 tomorrow digital jobs will be more satisfying and higher - paid",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 30,
+        "event_type": "inject_post",
+        "content": "[2020-03-01] Special personalised robots may help kids with autism learn : Study",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 31,
+        "event_type": "inject_post",
+        "content": "[2020-04-01] Investorideas . com Newswire - The AI Eye : Episode 323 - GBT Receives Notice of Publication for 3D Microchip and Memory Patent Application and AWS ( NasdaqGS : $AMZN ) Makes Amazon Detective Generally Available",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 31,
+        "event_type": "inject_post",
+        "content": "[2020-04-01] Using AI to Turn Brain Activity into Text",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 31,
+        "event_type": "inject_post",
+        "content": "[2020-04-01] Meet Carmen , Your Personal AI Vehicle Assistant ; Set to Change the Automotive Experience Forever",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 32,
+        "event_type": "inject_post",
+        "content": "[2020-04-01] Panel wants to double federal spending on AI",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 32,
+        "event_type": "inject_post",
+        "content": "[2020-04-01] AI for business : What going wrong , and how to get it right",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 32,
+        "event_type": "inject_post",
+        "content": "[2020-04-01] GSA bot builders add workforce capacity -- GCN",
+        "poster_agent_id": 4
+      },
+      {
+        "trigger_hour": 33,
+        "event_type": "inject_post",
+        "content": "[2020-04-01] Siri - Software Engineer - Cupertino , \u00a0California - 200162666",
+        "poster_agent_id": 5
+      },
+      {
+        "trigger_hour": 33,
+        "event_type": "inject_post",
+        "content": "[2020-04-01] Politically closed China keen on programmatically open AI",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 34,
+        "event_type": "inject_post",
+        "content": "[2020-04-01] Algorithm helps detect heart abnormalities",
+        "poster_agent_id": 1
+      },
+      {
+        "trigger_hour": 34,
+        "event_type": "inject_post",
+        "content": "[2020-04-01] 30 Under 30 Asia 2020 : The Startups Leveraging AI And Machine Learning To Transform Businesses",
+        "poster_agent_id": 0
+      },
+      {
+        "trigger_hour": 34,
+        "event_type": "inject_post",
+        "content": "[2020-05-01] Is AI already conscious ?",
+        "poster_agent_id": 5
+      },
+      {
+        "trigger_hour": 35,
+        "event_type": "inject_post",
+        "content": "[2020-05-01] Robots on hand to greet coronavirus patients in hotels",
+        "poster_agent_id": 9
+      },
+      {
+        "trigger_hour": 35,
+        "event_type": "inject_post",
+        "content": "[2020-05-01] Call center AI firm ASAPP unveils funding as COVID - 19 boosts business - Technology News , Firstpost",
+        "poster_agent_id": 0
+      },
+      {
+        "trigger_hour": 35,
+        "event_type": "inject_post",
+        "content": "[2020-06-01] Good egg ? Robot chef is trained to make the  perfect  omelette",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 36,
+        "event_type": "inject_post",
+        "content": "[2020-06-01] Watch a robot make a prettier omelet than you can",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 36,
+        "event_type": "inject_post",
+        "content": "[2020-06-01] Natural Language Processing ( NLP ) in Healthcare and Life Sciences Market Growing at a CAGR 20 . 5 % | Key Player 3M , Cerner , Nuance , Microsoft , IBM",
+        "poster_agent_id": 9
+      },
+      {
+        "trigger_hour": 36,
+        "event_type": "inject_post",
+        "content": "[2020-06-01] Cellwize Lauded by Frost & Sullivan for its Cloud - based , AI open RAN automation platform , Chime",
+        "poster_agent_id": 3
+      },
+      {
+        "trigger_hour": 37,
+        "event_type": "inject_post",
+        "content": "[2020-07-01] Reinforcement Learning - Startup Ecosystem Booming Segments ; Investors Seeking Growth",
+        "poster_agent_id": 0
+      },
+      {
+        "trigger_hour": 37,
+        "event_type": "inject_post",
+        "content": "[2020-07-01] Deepfake Technology Enters the Documentary World",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 37,
+        "event_type": "inject_post",
+        "content": "[2020-07-01] Informatica Announces Collaboration with The ADAPT Research Centre in Dublin to Accelerate AI Research and Development",
+        "poster_agent_id": 1
+      },
+      {
+        "trigger_hour": 38,
+        "event_type": "inject_post",
+        "content": "[2020-07-01] Vecna Robotics Appoints AI Scientist Daniela Rus to Board of Directors",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 38,
+        "event_type": "inject_post",
+        "content": "[2020-07-01] Hitachi and ThinkCyte announce collaboration to develop an AI - driven cell analysis and sorting system",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 39,
+        "event_type": "inject_post",
+        "content": "[2020-08-01] Ukraine startup RefaceAI targets global market with new deepfake technology",
+        "poster_agent_id": 0
+      },
+      {
+        "trigger_hour": 39,
+        "event_type": "inject_post",
+        "content": "[2020-08-01] Veracity AI partners with Australian AgTech company",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 39,
+        "event_type": "inject_post",
+        "content": "[2020-08-01] Autonomous cars : five reasons they still arent on our roads",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 40,
+        "event_type": "inject_post",
+        "content": "[2020-08-01] At 21 . 5 % CAGR , Robotic Nurse Assistant Market Size | Share , Trends , Growth | Research Development Report to 2025",
+        "poster_agent_id": 1
+      },
+      {
+        "trigger_hour": 40,
+        "event_type": "inject_post",
+        "content": "[2020-09-01] Microsoft developed a tool that can spot deepfakes",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 40,
+        "event_type": "inject_post",
+        "content": "[2020-09-01] An embedded ethics approach for AI development",
+        "poster_agent_id": 6
+      },
+      {
+        "trigger_hour": 41,
+        "event_type": "inject_post",
+        "content": "[2020-09-01] Microsoft announces a new tool to identify deepfakes and fight disinformation",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 41,
+        "event_type": "inject_post",
+        "content": "[2020-09-01] Can Machine Learning Algorithms Replace Exams ?",
+        "poster_agent_id": 1
+      },
+      {
+        "trigger_hour": 41,
+        "event_type": "inject_post",
+        "content": "[2020-09-01] Microsoft Releases Deepfake Detection Tool Ahead of Election",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 42,
+        "event_type": "inject_post",
+        "content": "[2020-09-01] Deepfake detection tool unveiled by Microsoft",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 42,
+        "event_type": "inject_post",
+        "content": "[2020-09-01] Data - Driven . Automated . Human . Welcome To The Factories Of The Future .",
+        "poster_agent_id": 3
+      },
+      {
+        "trigger_hour": 42,
+        "event_type": "inject_post",
+        "content": "[2020-09-01] Our Future Will Be Controlled By  Combined Will Of The People Of Earth  -- Musk Neuralink",
+        "poster_agent_id": 1
+      },
+      {
+        "trigger_hour": 43,
+        "event_type": "inject_post",
+        "content": "[2020-09-01] Columbia Partners with 2U on Artificial Intelligence Program -- Campus Technology",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 43,
+        "event_type": "inject_post",
+        "content": "[2020-10-01] Human Touch Keeps AI From Getting Out of Touch",
+        "poster_agent_id": 7
+      },
+      {
+        "trigger_hour": 44,
+        "event_type": "inject_post",
+        "content": "[2020-10-01] Five Key Tasks for Capitalizing on AI and Data Analytics",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 44,
+        "event_type": "inject_post",
+        "content": "[2020-10-01] AI is helping scientists discover fresh craters on Mars",
+        "poster_agent_id": 5
+      },
+      {
+        "trigger_hour": 44,
+        "event_type": "inject_post",
+        "content": "[2020-10-01] Robocorp Cloud is an Innovative Solution to Build a Software Robot Workforce",
+        "poster_agent_id": 4
+      },
+      {
+        "trigger_hour": 45,
+        "event_type": "inject_post",
+        "content": "[2020-10-01] Groundbreaking Solution , Robocorp Cloud , Allows Companies to Build a Software Robot Workforce",
+        "poster_agent_id": 4
+      },
+      {
+        "trigger_hour": 45,
+        "event_type": "inject_post",
+        "content": "[2020-10-01] Where Are The Deepfakes In This Presidential Election ?",
+        "poster_agent_id": 14
+      },
+      {
+        "trigger_hour": 45,
+        "event_type": "inject_post",
+        "content": "[2020-10-01] Using artificial intelligence to make publishing profitable",
+        "poster_agent_id": 12
+      },
+      {
+        "trigger_hour": 46,
+        "event_type": "inject_post",
+        "content": "[2020-11-01] The  deep fake  scare is more dangerous than AI - tech behind it",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 46,
+        "event_type": "inject_post",
+        "content": "[2020-11-01] AI will replace humans decision - making and do it better : HDFC Life COO",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 46,
+        "event_type": "inject_post",
+        "content": "[2020-11-01] AI - assisted virtual teachers coming , are you ready ?",
+        "poster_agent_id": 11
+      },
+      {
+        "trigger_hour": 47,
+        "event_type": "inject_post",
+        "content": "[2020-11-01] Google unveils cloud - based  Video Intelligence Application  to recognize objects in video",
+        "poster_agent_id": 2
+      },
+      {
+        "trigger_hour": 47,
+        "event_type": "inject_post",
+        "content": "[2020-11-01] AI in the Humanitarian Sector - World",
+        "poster_agent_id": 5
+      }
+    ],
+    "hot_topics": [
+      "deepfakes and AI-generated misinformation",
+      "robotics and physical automation",
+      "AI in healthcare and medical diagnosis",
+      "facial recognition and biometric surveillance",
+      "autonomous vehicles and self-driving cars",
+      "voice assistants and conversational AI",
+      "AI job displacement and workforce automation",
+      "AI ethics, bias, and regulation",
+      "AI in education and learning",
+      "neural interfaces and brain-computer technology",
+      "AI and pandemic response",
+      "creative AI and generative content",
+      "smart cities and IoT",
+      "AI and national security (China, military)"
+    ],
+    "narrative_direction": "This simulation models how public discourse about AI evolves and shapes human behavior.\nAgents should engage with headlines and each other following these empirically-grounded patterns:\n\n1. AMARA'S LAW: Early discussion overestimates short-term AI impact (hype), followed by\n   disillusionment when reality falls short, then gradual recognition of long-term transformation.\n   Agents should exhibit this cycle in their sentiment and expectations.\n\n2. TECHNOLOGY S-CURVE: Different AI themes (deepfakes, healthcare, jobs) emerge at different\n   times and follow adoption curves \u2014 slow start, rapid growth, plateau. Agents should reflect\n   growing awareness of emerging topics.\n\n3. JEVONS PARADOX: As AI makes tasks easier, people do MORE of them rather than resting.\n   Productivity-focused agents should gradually express both efficiency gains AND burnout/overwork.\n\n4. SAPIR-WHORF HYPOTHESIS: The language used to describe AI (threat vs tool vs partner)\n   shapes how agents think about it. Framing should evolve over time.\n\n5. PYGMALION EFFECT: Expectations about AI become self-fulfilling. Optimistic agents push\n   adoption; fearful agents push regulation. Both responses shape actual outcomes.\n\n6. POWER LAW: A few dominant narratives (jobs, deepfakes) attract most attention while\n   important niche topics (healthcare, education) get less coverage despite high impact."
+  },
+  "twitter_config": {
+    "platform": "twitter",
+    "recency_weight": 0.4,
+    "popularity_weight": 0.3,
+    "relevance_weight": 0.3,
+    "viral_threshold": 10,
+    "echo_chamber_strength": 0.5
+  },
+  "reddit_config": {
+    "platform": "reddit",
+    "recency_weight": 0.4,
+    "popularity_weight": 0.3,
+    "relevance_weight": 0.3,
+    "viral_threshold": 10,
+    "echo_chamber_strength": 0.5
+  },
+  "llm_model": "qwen2.5:14b",
+  "llm_base_url": "http://localhost:11434",
+  "generated_at": "2026-04-06T02:57:47.178603",
+  "generation_reasoning": "Config auto-generated from RAISE-26 historical AI headlines (2018-2020 calibration set). 200 seed headlines selected by relevance \u00d7 query overlap score, spread across 12 quarters. 20 agent personas representing diverse societal perspectives. Theoretical frameworks (Amara's Law, S-Curve, Jevons Paradox, Sapir-Whorf, Pygmalion, Power Law) encoded in narrative_direction."
+}
