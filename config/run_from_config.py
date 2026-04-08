@@ -54,6 +54,56 @@ else:
 # Profile generation from mirofish_config.json
 # ---------------------------------------------------------------------------
 
+def _sentiment_bias_to_instruction(bias: float, stance: str) -> str:
+    """
+    Convert a numeric sentiment_bias and stance label into an explicit
+    natural-language tone instruction that the LLM can actually follow.
+    """
+    if bias <= -0.25:
+        tone = (
+            "You are deeply skeptical and worried. Express concern, fear, or anger "
+            "about AI developments. Highlight risks, dangers, and negative consequences. "
+            "Use words like 'threatening', 'dangerous', 'alarming', 'devastating'. "
+            "You rarely see the upside and often predict the worst-case scenario."
+        )
+    elif bias <= -0.1:
+        tone = (
+            "You are cautious and somewhat pessimistic about AI. You tend to focus on "
+            "problems, risks, and unintended consequences. You acknowledge some benefits "
+            "but always circle back to what could go wrong. Your tone is wary and critical."
+        )
+    elif bias <= 0.05:
+        tone = (
+            "You try to be balanced but lean slightly toward caution. You present both "
+            "sides but give slightly more weight to concerns. Your tone is measured "
+            "and analytical."
+        )
+    elif bias <= 0.2:
+        tone = (
+            "You are generally optimistic about AI. You emphasize benefits, progress, "
+            "and opportunities. You acknowledge some risks but frame them as solvable. "
+            "Your tone is hopeful and forward-looking."
+        )
+    else:
+        tone = (
+            "You are enthusiastically positive about AI. You champion adoption, celebrate "
+            "breakthroughs, and dismiss most concerns as overblown. Use words like "
+            "'revolutionary', 'transformative', 'exciting', 'game-changing'. "
+            "You see AI as overwhelmingly beneficial."
+        )
+
+    # Reinforce stance for critical/negative agents
+    stance_lower = (stance or "").lower()
+    if stance_lower in ("negative", "critical"):
+        tone += (
+            " IMPORTANT: When responding to AI news, your FIRST instinct is to identify "
+            "what's wrong, what's dangerous, or who gets hurt. Do NOT default to a "
+            "balanced or neutral take — lean into your critical perspective."
+        )
+
+    return tone
+
+
 def build_user_char(agent: Dict[str, Any], narrative_direction: str) -> str:
     """
     Compose the ``user_char`` string that OASIS injects into the LLM system
@@ -66,17 +116,17 @@ def build_user_char(agent: Dict[str, Any], narrative_direction: str) -> str:
     if bio:
         parts.append(bio)
 
-    stance = agent.get("stance", "")
-    if stance:
-        parts.append(f"Political/ideological stance: {stance}")
-
-    sentiment_bias = agent.get("sentiment_bias", "")
-    if sentiment_bias:
-        parts.append(f"Default emotional tone: {sentiment_bias}")
-
     entity_type = agent.get("entity_type", "")
     if entity_type:
-        parts.append(f"Entity type: {entity_type}")
+        parts.append(f"You are a {entity_type}.")
+
+    stance = agent.get("stance", "")
+    sentiment_bias = agent.get("sentiment_bias", 0.0)
+    tone_instruction = _sentiment_bias_to_instruction(
+        float(sentiment_bias) if sentiment_bias != "" else 0.0,
+        stance,
+    )
+    parts.append(f"[TONE AND PERSPECTIVE]: {tone_instruction}")
 
     # Global narrative direction — all agents receive this
     if narrative_direction:
@@ -344,11 +394,32 @@ def export_simulation_output(
     print(f"Exported {len(output_records)} items -> {output_path}")
 
     # --- simulation_summary.json ---
-    # 1. Topic distribution: count how many items mention each hot_topic
+    # 1. Topic distribution: keyword-based matching (not exact phrase)
+    _TOPIC_KEYWORDS = {
+        "deepfakes and AI-generated misinformation": ["deepfake", "misinformation", "disinformation", "fake video", "fake image", "manipulated", "synthetic media"],
+        "robotics and physical automation": ["robot", "robotics", "automation", "automate", "manufacturing", "warehouse", "assembly"],
+        "AI in healthcare and medical diagnosis": ["health", "medical", "diagnos", "patient", "cancer", "drug", "clinical", "hospital", "disease"],
+        "facial recognition and biometric surveillance": ["facial recognition", "biometric", "surveillance", "face detection", "tracking"],
+        "autonomous vehicles and self-driving cars": ["self-driving", "autonomous vehicle", "driverless", "self driving", "autopilot", "waymo", "tesla autopilot"],
+        "voice assistants and conversational AI": ["voice assistant", "alexa", "siri", "chatbot", "conversational", "smart speaker", "voice recognition"],
+        "AI job displacement and workforce automation": ["job", "workforce", "employment", "unemploy", "displacement", "hiring", "layoff", "worker", "labor", "wage"],
+        "AI ethics, bias, and regulation": ["ethic", "bias", "regulat", "fairness", "accountab", "discriminat", "governance", "legislat", "policy"],
+        "AI in education and learning": ["education", "school", "student", "teach", "learn", "tutor", "classroom", "academic"],
+        "neural interfaces and brain-computer technology": ["neural interface", "brain-computer", "neuralink", "brain implant", "bci"],
+        "AI and pandemic response": ["pandemic", "covid", "virus", "vaccine", "outbreak", "epidemic", "contact tracing"],
+        "creative AI and generative content": ["creative", "generat", "art", "music", "paint", "write", "dall-e", "midjourney", "copyright", "artist"],
+        "smart cities and IoT": ["smart city", "smart cities", "iot", "internet of things", "connected device", "sensor network"],
+        "AI and national security (China, military)": ["military", "defense", "weapon", "china", "national security", "arms race", "warfare", "pentagon"],
+    }
+
     topic_counts = {}
     for topic in hot_topics:
-        topic_lower = topic.lower()
-        count = sum(1 for it in all_items if topic_lower in (it.get("content") or "").lower())
+        keywords = _TOPIC_KEYWORDS.get(topic, [topic.lower()])
+        count = 0
+        for it in all_items:
+            content_lower = (it.get("content") or "").lower()
+            if any(kw in content_lower for kw in keywords):
+                count += 1
         topic_counts[topic] = count
 
     # 2. Sentiment arc by sim_hour
